@@ -21,15 +21,17 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
     return variants[status] || 'info';
   };
 
-  const getPaymentStatusVariant = (status: string) => {
-    const variants: Record<string, 'success' | 'warning' | 'danger'> = {
-      paid: 'success',
-      pending: 'warning',
-      failed: 'danger',
-      refunded: 'info',
-    };
-    return variants[status] || 'warning';
+  // src/components/features/orders/OrderCard/OrderCard.tsx
+
+const getPaymentStatusVariant = (status: string) => {
+  const variants: Record<string, 'success' | 'warning' | 'danger'> = {
+    paid: 'success',
+    pending: 'warning',
+    failed: 'danger',
+    refunded: 'warning',  // ← CHANGE FROM 'info' TO 'warning'
   };
+  return variants[status] || 'warning';
+};
 
   return (
     <Card hover onClick={() => onClick?.(order)} className="cursor-pointer">
