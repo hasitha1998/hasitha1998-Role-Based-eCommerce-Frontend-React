@@ -21,17 +21,27 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
     return variants[status] || 'info';
   };
 
-  // src/components/features/orders/OrderCard/OrderCard.tsx
-
-const getPaymentStatusVariant = (status: string) => {
-  const variants: Record<string, 'success' | 'warning' | 'danger'> = {
-    paid: 'success',
-    pending: 'warning',
-    failed: 'danger',
-    refunded: 'warning',  // ← CHANGE FROM 'info' TO 'warning'
+  const getPaymentStatusVariant = (status: string) => {
+    const variants: Record<string, 'success' | 'warning' | 'danger'> = {
+      paid: 'success',
+      pending: 'warning',
+      failed: 'danger',
+      refunded: 'warning',
+    };
+    return variants[status] || 'warning';
   };
-  return variants[status] || 'warning';
-};
+
+  // Helper function to safely format amount
+  const formatAmount = (amount: any): string => {
+    if (typeof amount === 'number') {
+      return amount.toFixed(2);
+    }
+    if (typeof amount === 'string') {
+      const parsed = parseFloat(amount);
+      return isNaN(parsed) ? '0.00' : parsed.toFixed(2);
+    }
+    return '0.00';
+  };
 
   return (
     <Card hover onClick={() => onClick?.(order)} className="cursor-pointer">
@@ -55,7 +65,7 @@ const getPaymentStatusVariant = (status: string) => {
           {/* Customer */}
           <div>
             <p className="text-sm text-gray-600">Customer</p>
-            <p className="font-medium text-gray-900">{order.user?.email}</p>
+            <p className="font-medium text-gray-900">{order.user?.email || 'N/A'}</p>
           </div>
 
           {/* Amount & Payment */}
@@ -63,7 +73,7 @@ const getPaymentStatusVariant = (status: string) => {
             <div>
               <p className="text-sm text-gray-600">Total Amount</p>
               <p className="text-xl font-bold text-blue-600">
-                ${order.totalAmount.toFixed(2)}
+                ${formatAmount(order.totalAmount)}
               </p>
             </div>
             <Badge variant={getPaymentStatusVariant(order.paymentStatus)}>
