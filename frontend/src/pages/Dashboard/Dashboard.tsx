@@ -8,7 +8,7 @@ import { dashboardService } from '@/services';
 import { Spinner } from '@/components/ui';
 
 export const Dashboard: React.FC = () => {
-  const { orders, isLoading } = useOrders();
+  const { orders,  } = useOrders();
   const [stats, setStats] = useState({ users: 0, orders: 0, products: 0, revenue: 0 });
   const [loadingStats, setLoadingStats] = useState(true);
 
