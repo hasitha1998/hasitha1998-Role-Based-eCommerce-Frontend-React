@@ -53,23 +53,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
 
           <div className="flex items-center justify-between pt-2">
-            <div>
-              <p className="text-2xl font-bold text-blue-600">
-                ${product.price.toFixed(2)}
-              </p>
-              {product.comparePrice && product.comparePrice > product.price && (
-                <p className="text-sm text-gray-500 line-through">
-                  ${product.comparePrice.toFixed(2)}
-                </p>
-              )}
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-600">Stock</p>
-              <p className={`font-semibold ${product.stock > 10 ? 'text-green-600' : 'text-red-600'}`}>
-                {product.stock}
-              </p>
-            </div>
-          </div>
+  <div>
+    <p className="text-2xl font-bold text-blue-600">
+      ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+    </p>
+    {product.comparePrice && product.comparePrice > product.price && (
+      <p className="text-sm text-gray-500 line-through">
+        ${typeof product.comparePrice === 'number' ? product.comparePrice.toFixed(2) : '0.00'}
+      </p>
+    )}
+  </div>
+  <div className="text-right">
+    <p className="text-sm text-gray-600">Stock</p>
+    <p className={`font-semibold ${product.stock > 10 ? 'text-green-600' : 'text-red-600'}`}>
+      {product.stock}
+    </p>
+  </div>
+</div>
 
           {product.sku && (
             <p className="text-xs text-gray-500">SKU: {product.sku}</p>

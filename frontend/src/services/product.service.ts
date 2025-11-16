@@ -65,11 +65,30 @@ class ProductService {
   /**
    * Get all products with pagination
    */
-  async getAll(params?: PaginationParams): Promise<ProductsResponse> {
-    const response = await api.get<ProductsResponse>('/products', { params });
-    return response.data;
-  }
+  // src/services/product.service.ts
 
+async getAll(params?: PaginationParams): Promise<ProductsResponse> {
+  const response = await api.get<ProductsResponse>('/products', { params });
+  
+  // Add this console log:
+  console.log('📦 Raw API response:', response.data);
+  
+  // Parse numeric fields
+  const products = response.data.products.map(p => ({
+    ...p,
+    price: typeof p.price === 'string' ? parseFloat(p.price) : p.price,
+    comparePrice: p.comparePrice ? (typeof p.comparePrice === 'string' ? parseFloat(p.comparePrice) : p.comparePrice) : undefined,
+    costPrice: p.costPrice ? (typeof p.costPrice === 'string' ? parseFloat(p.costPrice) : p.costPrice) : undefined,
+    stock: typeof p.stock === 'string' ? parseInt(p.stock) : p.stock,
+  }));
+  
+  console.log('📦 Parsed products:', products);
+  
+  return {
+    ...response.data,
+    products,
+  };
+}
   /**
    * Get single product by ID
    */

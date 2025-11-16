@@ -1,7 +1,7 @@
 // src/hooks/useProducts.ts
 
 import { useState, useEffect } from 'react';
-import { productService, Product, ProductFormData, Category } from '@/services';
+import { productService, categoryService, Product, ProductFormData, Category } from '@/services';
 
 interface UseProductsReturn {
   products: Product[];
@@ -52,10 +52,13 @@ export const useProducts = (): UseProductsReturn => {
 
   const fetchCategories = async () => {
     try {
+      console.log('🔵 useProducts - Fetching categories...');
       setError(null);
-      const categoriesData = await productService.getCategories();
+      const categoriesData = await categoryService.getAll();  // ← Changed from productService
+      console.log('✅ useProducts - Categories:', categoriesData);
       setCategories(categoriesData);
     } catch (err: any) {
+      console.error('❌ useProducts - Category fetch error:', err);
       const errorMessage = err.response?.data?.message || 'Failed to fetch categories';
       setError(errorMessage);
     }
@@ -81,7 +84,6 @@ export const useProducts = (): UseProductsReturn => {
       setIsLoading(true);
       setError(null);
       const newProduct = await productService.create(data);
-      // Refresh products list
       await fetchProducts(pagination.page, pagination.limit);
       return newProduct;
     } catch (err: any) {
@@ -98,7 +100,6 @@ export const useProducts = (): UseProductsReturn => {
       setIsLoading(true);
       setError(null);
       const updatedProduct = await productService.update(id, data);
-      // Update products list
       setProducts(products.map(p => p.id === id ? updatedProduct : p));
       return updatedProduct;
     } catch (err: any) {
@@ -115,7 +116,6 @@ export const useProducts = (): UseProductsReturn => {
       setIsLoading(true);
       setError(null);
       await productService.delete(id);
-      // Remove from products list
       setProducts(products.filter(p => p.id !== id));
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Failed to delete product';
@@ -130,8 +130,8 @@ export const useProducts = (): UseProductsReturn => {
     setError(null);
   };
 
-  // Auto-fetch products on mount
   useEffect(() => {
+    console.log('🔵 useProducts mounted');
     fetchProducts();
     fetchCategories();
   }, []);

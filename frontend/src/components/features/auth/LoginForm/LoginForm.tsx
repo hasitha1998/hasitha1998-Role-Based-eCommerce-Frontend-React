@@ -11,16 +11,22 @@ export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await login({ email, password });
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('Login failed:', err);
-    }
-  };
+ // src/components/features/auth/LoginForm/LoginForm.tsx
 
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  console.log('🔵 Form submitted');
+  
+  try {
+    console.log('🔵 Calling login...');
+    await login({ email, password });
+    console.log('✅ Login successful, navigating to dashboard...');
+    navigate('/dashboard');
+    console.log('🔵 Navigate called');
+  } catch (err) {
+    console.error('❌ Login failed:', err);
+  }
+};
   const handleGoogleSignIn = () => {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     window.location.href = `${apiUrl}/auth/google`;

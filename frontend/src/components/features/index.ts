@@ -15,3 +15,6 @@ export { OrderCard, OrderList, OrderDetails } from './orders';
 
 // Settings
 export { SettingItem } from './settings';
+
+
+export { CategoryForm } from './categories/CategoryForm';

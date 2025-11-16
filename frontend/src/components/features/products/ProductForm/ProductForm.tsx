@@ -1,6 +1,6 @@
 // src/components/features/products/ProductForm/ProductForm.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, } from 'react';
 import { Product, Category, ProductFormData } from '@/services';
 import { Input, Select, Button, Card, CardBody } from '@/components/ui';
 
@@ -51,9 +51,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   };
 
   const categoryOptions = [
-    { value: '', label: 'Select a category' },
-    ...categories.map(cat => ({ value: cat.id, label: cat.name })),
-  ];
+  { value: '', label: 'Select a category' },
+  ...(categories || []).map(cat => ({ value: cat.id, label: cat.name })),
+];
 
   return (
     <Card>
