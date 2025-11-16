@@ -23,6 +23,18 @@ export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
     return variants[status] || 'info';
   };
 
+  // Helper function to safely format amount
+  const formatAmount = (amount: any): string => {
+    if (typeof amount === 'number') {
+      return amount.toFixed(2);
+    }
+    if (typeof amount === 'string') {
+      const parsed = parseFloat(amount);
+      return isNaN(parsed) ? '0.00' : parsed.toFixed(2);
+    }
+    return '0.00';
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -62,8 +74,8 @@ export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
                   className="cursor-pointer hover:bg-gray-50"
                 >
                   <TableCell className="font-medium">{order.orderNumber}</TableCell>
-                  <TableCell>{order.user?.email}</TableCell>
-                  <TableCell>${order.totalAmount.toFixed(2)}</TableCell>
+                  <TableCell>{order.user?.email || 'N/A'}</TableCell>
+                  <TableCell>${formatAmount(order.totalAmount)}</TableCell>
                   <TableCell>
                     <Badge variant={getStatusVariant(order.status)}>
                       {order.status}
