@@ -112,7 +112,7 @@ class AuthService {
    * Login with Google (redirect to Google OAuth)
    */
   loginWithGoogle(): void {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://role-based-ecommerce-backend-production.up.railway.app/api';
     window.location.href = `${apiUrl}/auth/google`;
   }
 }
