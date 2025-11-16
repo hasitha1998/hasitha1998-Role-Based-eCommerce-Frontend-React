@@ -17,6 +17,13 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
 }) => {
   const [selectedStatus, setSelectedStatus] = React.useState<OrderStatus>(order.status);
 
+  const calculateTotal = () => {
+    if (!order.items || order.items.length === 0) return 0;
+    return order.items.reduce((sum, item) => sum + Number(item.subtotal), 0);
+  };
+
+  const calculatedTotal = calculateTotal();
+
   const handleStatusChange = async () => {
     if (selectedStatus !== order.status && onStatusChange) {
       await onStatusChange(order.id, selectedStatus);
@@ -89,11 +96,11 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
                       {item.product?.name || 'Product'}
                     </p>
                     <p className="text-sm text-gray-500">
-                      Quantity: {item.quantity} × ${item.price.toFixed(2)}
+                      Quantity: {item.quantity} × ${Number(item.price).toFixed(2)}
                     </p>
                   </div>
                   <p className="font-semibold text-gray-900">
-                    ${item.subtotal.toFixed(2)}
+                    ${Number(item.subtotal).toFixed(2)}
                   </p>
                 </div>
               ))}
@@ -101,7 +108,14 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
               <div className="pt-4 border-t border-gray-200">
                 <div className="flex items-center justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-blue-600">${order.totalAmount.toFixed(2)}</span>
+                  <span className="text-blue-600">
+                    ${Number(order.totalAmount).toFixed(2)}
+                    {calculatedTotal !== Number(order.totalAmount) && (
+                      <span className="text-sm text-red-600 ml-2">
+                        (Calculated: ${calculatedTotal.toFixed(2)})
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
             </div>
